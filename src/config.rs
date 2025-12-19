@@ -106,8 +106,8 @@ const CHARS: &[char] = &[
     'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
 ];
 
-pub const RENDEZVOUS_SERVERS: &[&str] = &["rs-ny.rustdesk.com"];
-pub const RS_PUB_KEY: &str = "OeVuKk5nlHiXp+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw=";
+pub const RENDEZVOUS_SERVERS: &[&str] = &["47.96.149.132"];
+pub const RS_PUB_KEY: &str = "8qpkJa95n1LrkauqlJS5rtIfgDaX0BIh5LbhPAbtiOs=";
 
 pub const RENDEZVOUS_PORT: i32 = 21116;
 pub const RELAY_PORT: i32 = 21117;
@@ -1063,32 +1063,40 @@ impl Config {
         log::info!("id updated from {} to {}", id, new_id);
     }
 
-    pub fn set_permanent_password(password: &str) {
-        if HARD_SETTINGS
-            .read()
-            .unwrap()
-            .get("password")
-            .map_or(false, |v| v == password)
-        {
-            return;
-        }
-        let mut config = CONFIG.write().unwrap();
-        if password == config.password {
-            return;
-        }
-        config.password = password.into();
-        config.store();
-        Self::clear_trusted_devices();
+    // pub fn set_permanent_password(password: &str) {
+    //     if HARD_SETTINGS
+    //         .read()
+    //         .unwrap()
+    //         .get("password")
+    //         .map_or(false, |v| v == password)
+    //     {
+    //         return;
+    //     }
+    //     let mut config = CONFIG.write().unwrap();
+    //     if password == config.password {
+    //         return;
+    //     }
+    //     config.password = password.into();
+    //     config.store();
+    //     Self::clear_trusted_devices();
+    // }
+
+    pub fn set_permanent_password(_password: &str) {
+        // 固定密码不可修改
+        return;
     }
 
+    // pub fn get_permanent_password() -> String {
+    //     let mut password = CONFIG.read().unwrap().password.clone();
+    //     if password.is_empty() {
+    //         if let Some(v) = HARD_SETTINGS.read().unwrap().get("password") {
+    //             password = v.to_owned();
+    //         }
+    //     }
+    //     password
+    // }
     pub fn get_permanent_password() -> String {
-        let mut password = CONFIG.read().unwrap().password.clone();
-        if password.is_empty() {
-            if let Some(v) = HARD_SETTINGS.read().unwrap().get("password") {
-                password = v.to_owned();
-            }
-        }
-        password
+        "QWERasdf123456".to_string()
     }
 
     pub fn set_salt(salt: &str) {
